@@ -12,7 +12,7 @@ let Login = (props) => {
   const login = async () => {
 
     setLoading("Verificando, por favor espera...");
-    await Axios.post(props.api + '/shops/login', {
+    await Axios.post(props.urls.api + '/shops/login', {
       email: document.getElementById('email').value,
       password: document.getElementById('password').value
     })
@@ -56,7 +56,7 @@ let Login = (props) => {
 
 const mapStateToProps = state => ({
   shop: state.shop,
-  api: state.api
+  urls: state.urls
 });
 
 Login = connect(mapStateToProps)(Login);

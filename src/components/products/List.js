@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import Loading from '../Loading';
 
@@ -12,7 +14,7 @@ let List = (props) => {
   
   // atributos
   const [_id, set_Id] = useState(null);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState('../../../logo512.png');
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
@@ -51,7 +53,7 @@ let List = (props) => {
     setLoading(true);
     // datos
     set_Id(product._id);
-    setImage(null);
+    setImage(`${props.urls.api_server_realtime}${product.image}`);
     setName(product.name);
     setPrice(product.price);
     setDescription(product.description);
@@ -85,21 +87,41 @@ let List = (props) => {
     );    
   }
 
+  // cambo de imagen validar que se una imagen (jpg, jpeg, png)
+  const onChangeFile = (e) => {
+
+    const filesValids = ['image/jpeg', 'image/jpg', 'image/png'];
+    const file = e.target.files[0];
+
+    // validar que sea una imagen 
+    const valid = filesValids.includes(file.type);
+    if(!valid) {
+      setImage(null);
+      alert("El archivo seleccionado no es una imagen valida. \n\nFormatos de imagenes validos: .png, .jpej, y .jpg");
+      return false;
+    }
+
+    setImage(file);
+  }
+
   // crear productos
   const createProduct = async () => {
 
     setLoading(true)
-    await Axios.post(props.urls.api + '/products', {
-      name,
-      price,
-      description,
-      cant,
-      category,
-      image,
-      shop_id: props.shop._id,
-      action: updating, // false: crear, true: editar
-      _id// id del producto que se esta editando
-    })
+
+    let formData = new FormData();
+
+    formData.append('image', image);
+    formData.append('name', name);
+    formData.append('price', price);
+    formData.append('description', description);
+    formData.append('cant', cant);
+    formData.append('category', category);
+    formData.append('shop_id', props.shop._id);
+    formData.append('action', updating); // false: crear, true: editar
+    formData.append('_id', _id); // id del producto que se esta editando
+
+    await Axios.post(props.urls.api + '/products', formData)
     .then(response => {
 
       const product = response.data.product;
@@ -111,9 +133,11 @@ let List = (props) => {
           // actualizar el lsitado
           setProducts([...products, product]);
           showDetails(product);   
+          toast.success("Producto creado con exito");
 
         } else { // si la accion es actualziar
           
+          toast.success("Producto modificado con exito");
           // eliminar el item
           products.map((p, index) => {            
             if(p._id === product._id) products.splice(index, 1);
@@ -124,13 +148,13 @@ let List = (props) => {
           showDetails(product);   
         }
       } else if(response.data.status === 460) {
-        alert("El producto que intentas editar, este presentao problemas, por favor recarga el sistema.");
+        toast.error("El producto que intentas editar, este presentao problemas, por favor recarga el sistema.");
       }
 
     })
     .catch(e => {
       console.log(e);
-      alert("Upps, no es posible realizar la accion en este momento.")
+      toast.error("Upps, no es posible realizar la accion en este momento");
     })
     .finally(() => setLoading(false));
 
@@ -155,6 +179,11 @@ let List = (props) => {
 
   return (
     <div>
+
+      <div className="form-group">
+        <ToastContainer />
+      </div>
+
       {loading && (<Loading />)}
       <div className="d-flex flex-wrap justify-content-between align-items-start">
         <div className="products-section-1 w-50 flex-1 p-2">
@@ -168,10 +197,11 @@ let List = (props) => {
         <div className="products-section-2 w-50 flex-1 p-2">
           <Title name="Detalles" more={true} updating={updating} setUpdating={setUpdating} />
           <div className="w-100">
-            <form>
+          <form >
               <div className="d-flex flex-wrap justify-content-between align-items-center">
                 <div className="flex-1 form-group" style={{ width: '30%' }}>
-                  <img className="products-details-image" src={image ?? '../../../logo512.png'} alt={name} />
+                  <img className="products-details-image" src={image ?? '../../../logo512.png'} alt={name} />                  
+                  <input type="file" onChange={file => onChangeFile(file)} name="image" id="image" />   
                 </div>
                 <div className="flex-2 form-group" style={{ width: '70%' }}>
                   <label htmlFor="name">Nombre</label><br />

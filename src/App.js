@@ -42,6 +42,9 @@ let App = (props) => {
           reconnection: true
         });
 
+        // globales del la tienda activa
+        //document.querySelector('#global-name-shop').innerHTML = props.shop.name;
+
 
         // pendiente de las notificaciones
         socket.emit('new-order-connected', props.shop._id);

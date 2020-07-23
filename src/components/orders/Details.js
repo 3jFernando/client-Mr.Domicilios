@@ -147,7 +147,9 @@ let Details = props => {
                         <td>{product._id}</td>
                         <td>
                           <div className="d-flex justify-content-start align-items-center">
-                            <img className="mr-2" style={{ width: 32, height: 32, borderRadius: 50 }} src={(product.product.image === "") ? '../../../logo512.png' : product.product.image} alt={product.product.nam} />
+                            <img className="mr-2" 
+                              style={{ width: 32, height: 32, borderRadius: 50 }} 
+                              src={(product.product.image === "") ? '../../../logo512.png' : props.urls.api_server_realtime+product.product.image} alt={product.product.nam} />
                             {product.product.name}
                           </div>
                         </td>
