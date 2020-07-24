@@ -22,7 +22,7 @@ let Details = props => {
   useEffect(() => {
     if (props.shop !== null) {
 
-      const _order = props.orders.filter(x => x._id == id);
+      const _order = props.orders.filter(x => x._id === id);
       if (_order.length > 0) {
         setOrder(_order[0]);
 

@@ -27,6 +27,7 @@ import { connect } from 'react-redux';
 import { validateSessionShop } from './redux/actions/shops';
 import { createOrder } from './redux/actions/orders';
 import FORMAT_CASH from './utils/format_cash';
+import Account from './components/shop/Account';
 
 let App = (props) => {
   const [shop, setShop] = useState(null);
@@ -95,7 +96,8 @@ let App = (props) => {
             (
               <div className="content m-2" onClick={() => closeDrawer()}>
                 <Switch>
-                  <Route path='/' exact component={ListOrders} />
+                  <Route path='/' exact component={Account} />
+                  <Route path='/orders' exact component={ListOrders} />
                   <Route path='/orders/:id' component={DetailsOrder} />
                   <Route path='/products' exact component={ListProducts} />
                   <Route path='/categories' exact component={ListCategories} />

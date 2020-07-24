@@ -18,9 +18,12 @@ let Header = (props) => {
       <div className="navbar-brand d-flex align-items-center">
         <i className="fa mr-4 fa-bars text-white drawer-open" onClick={() => openMenu()}></i>
         <Link to='/'>
-          <div>
-            <b className="text-white">Mr.Domicilios</b><br />
-            <span className="text-white global-name" id="global-name-shop">Nombre de la tienda</span> 
+          <div className="d-flex aling-items-center">
+            <img style={{width: 60, heigth: 60, borderRadius: 2,}} src={ props.urls.api_server_realtime + '/uploads/shops/logo.jpeg' } alt="logo" />
+            <div className="ml-2">
+              <b className="text-white">Mr.Domicilios</b><br />
+              <span className="text-white global-name" id="global-name-shop">{ props.shop !== null ? props.shop.name : 'Reinicia tu sesion.' }</span> 
+            </div>
           </div>
         </Link>
       </div>
@@ -38,7 +41,8 @@ function openMenu() {
 }
 
 const mapStateToProps = state => ({
-  shop: state.shop
+  shop: state.shop,
+  urls: state.urls,
 });
 
 Header = connect(mapStateToProps)(Header);
