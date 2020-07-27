@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import socketIOClient from 'socket.io-client';
 import './App.css';
 
 // configuracion de rutas
@@ -14,8 +15,8 @@ import ListProducts from './components/products/List';
 import ListCategories from './components/categories/List';
 import ListIncharges from './components/incharges/List';
 import CreateIncharges from './components/incharges/Create';
-
-import socketIOClient from 'socket.io-client';
+import HomeAdvertising from './components/advertising/Home';
+import NewAdvertising from './components/advertising/New';
 
 // componentes para usuario sin sesion iniciada
 import HeaderNotUser from './components/auth/Header';
@@ -28,6 +29,8 @@ import { validateSessionShop } from './redux/actions/shops';
 import { createOrder } from './redux/actions/orders';
 import FORMAT_CASH from './utils/format_cash';
 import Account from './components/shop/Account';
+import ToastMessage from './utils/ToastMessage';
+import {toast} from 'react-toastify';
 
 let App = (props) => {
   const [shop, setShop] = useState(null);
@@ -50,7 +53,7 @@ let App = (props) => {
         // pendiente de las notificaciones
         socket.emit('new-order-connected', props.shop._id);
         socket.on('new-order', (__connect, payload) => {
-          alert("Nueva orden \n\nCliente: "+payload.client.name+"\nValor orden: "+FORMAT_CASH(payload.total));
+          toast.warning("Nueva orden \n\nCliente: "+payload.client.name+"\nValor orden: "+FORMAT_CASH(payload.total));
           // agregar al listado
           props.dispatch(createOrder(payload));
         });
@@ -64,6 +67,7 @@ let App = (props) => {
   return (
     <BrowserRouter>
       <div className="main">
+        <ToastMessage />
         {
           shop === null ?
             (
@@ -102,7 +106,9 @@ let App = (props) => {
                   <Route path='/products' exact component={ListProducts} />
                   <Route path='/categories' exact component={ListCategories} />
                   <Route path='/incharges' exact component={ListIncharges} />
-                  <Route path='/incharges/create' component={CreateIncharges} />                  
+                  <Route path='/incharges/create' component={CreateIncharges} /> 
+                  <Route path='/advertising' exact component={HomeAdvertising} />
+                  <Route path='/advertising/new' component={NewAdvertising} />                 
                   <Route path='*' component={Page404NotFound} />
                 </Switch>
 

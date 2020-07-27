@@ -28,7 +28,6 @@ let Details = props => {
 
         // conexion al servidor
         setSocket(socketIOCCLIENT(props.urls.api_server_realtime));
-
       }
     }
 
@@ -149,7 +148,7 @@ let Details = props => {
                           <div className="d-flex justify-content-start align-items-center">
                             <img className="mr-2" 
                               style={{ width: 32, height: 32, borderRadius: 50 }} 
-                              src={(product.product.image === "") ? '../../../logo512.png' : props.urls.api_server_realtime+product.product.image} alt={product.product.nam} />
+                              src={(product.product.image === '' || product.product.image === null || product.product.image === undefined) ? '../../../public/logo512.png' : props.urls.api_server_realtime+product.product.image} alt={product.product.name} />
                             {product.product.name}
                           </div>
                         </td>

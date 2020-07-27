@@ -19,7 +19,7 @@ let Header = (props) => {
         <i className="fa mr-4 fa-bars text-white drawer-open" onClick={() => openMenu()}></i>
         <Link to='/'>
           <div className="d-flex aling-items-center">
-            <img style={{width: 60, heigth: 60, borderRadius: 2,}} src={ props.urls.api_server_realtime + '/uploads/shops/logo.jpeg' } alt="logo" />
+            <img style={{width: 60, heigth: 60, borderRadius: 2,}} src={ `${props.urls.api_server_realtime}${props.shop.photo}` } alt="logo" />
             <div className="ml-2">
               <b className="text-white">Mr.Domicilios</b><br />
               <span className="text-white global-name" id="global-name-shop">{ props.shop !== null ? props.shop.name : 'Reinicia tu sesion.' }</span> 

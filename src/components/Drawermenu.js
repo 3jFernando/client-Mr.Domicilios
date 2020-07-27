@@ -15,7 +15,8 @@ export default function Drawermenu(props) {
         <Draweritem name="Ordenes" path="/orders" icon="fa fa-list" />
         <Draweritem name="Productos" path="/products" icon="fa fa-shopping-bag" />
         <Draweritem name="Categorias" path="/categories" icon="fa fa-cube" />
-        <Draweritem name="Domiciliarios" path="/incharges" icon="fa fa-bicycle" />
+        <Draweritem name="Domiciliarios" path="/incharges" icon="fa fa-group" />
+        <Draweritem name="Publicidad" path="/advertising" icon="fa fa-bolt" />
       </div>
     </div>
   );

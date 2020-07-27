@@ -4,6 +4,12 @@ body {
   margin: 0;
   font-size: 12px;
 }
+.color-one{
+  color: #000000;
+}
+.color-two{
+  color: #29d45d;
+}
 .main {
   display: grid;
   /*grid-template-rows: 10% 85% 5%;*/
@@ -175,4 +181,27 @@ a, a:hover {
 .list-menu-account-shop li:hover{
   cursor: pointer;
   background-color: #FFF;
+}
+.item-category-general{
+  margin-bottom: 4px;
+  text-align: center;
+  background-color: #FFFFFF;
+  margin: 2px;
+  padding: 4px;
+  padding-top: 10px;
+  border-radius: 3px;
+  box-shadow: 0 4px 14px -10px #000;
+}
+.item-category-general.active{
+  background-color: #29d45d;
+  color: white;
+}
+.item-category-general:hover{
+  box-shadow: 0 4px 14px -10px #fff;
+  cursor: pointer;
+}
+.item-category-general img{
+  margin-bottom: 2px;
+  width: 25px;
+  height: 25px;  
 }

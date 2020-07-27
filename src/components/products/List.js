@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
+import { toast } from 'react-toastify';
+import ToastMessage from '../../utils/ToastMessage';
 import Loading from '../Loading';
+import ControlSelectFile from '../../utils/ControlSelectFile';
+
+import {clearProducts, createProducts} from '../../redux/actions/products';
 
 let List = (props) => {
   const [updating, setUpdating] = useState(false);
@@ -25,13 +27,16 @@ let List = (props) => {
 
     if (props.shop !== null) {
 
+      props.dispatch(clearProducts());
       setLoading(true);
       const load = async () => {
         await Axios.get(props.urls.api + '/products/shop/' + props.shop._id)
           .then(response => {
             const status = response.data.status;
             if (status === 200) {
-              setProducts(response.data.products);
+              const items = response.data.products ?? [];
+              setProducts(items);
+              items.map(x => props.dispatch(createProducts(x)));     
             } else {
               alert("Falla al tratar de cargar los datos intentalo de nuevo");
             }
@@ -53,7 +58,7 @@ let List = (props) => {
     setLoading(true);
     // datos
     set_Id(product._id);
-    setImage(`${props.urls.api_server_realtime}${product.image}`);
+    setImage(product.image === undefined || product.image === null ? '../../../logo512.png' : `${props.urls.api_server_realtime}${product.image}`);
     setName(product.name);
     setPrice(product.price);
     setDescription(product.description);
@@ -88,20 +93,11 @@ let List = (props) => {
   }
 
   // cambo de imagen validar que se una imagen (jpg, jpeg, png)
-  const onChangeFile = (e) => {
-
-    const filesValids = ['image/jpeg', 'image/jpg', 'image/png'];
-    const file = e.target.files[0];
-
-    // validar que sea una imagen 
-    const valid = filesValids.includes(file.type);
-    if(!valid) {
-      setImage(null);
-      alert("El archivo seleccionado no es una imagen valida. \n\nFormatos de imagenes validos: .png, .jpej, y .jpg");
-      return false;
+  const onChangeFile = (e) => {    
+    const response = ControlSelectFile(e);
+    if(response.status) {
+      setImage(response.file);
     }
-
-    setImage(file);
   }
 
   // crear productos
@@ -121,7 +117,7 @@ let List = (props) => {
     formData.append('action', updating); // false: crear, true: editar
     formData.append('_id', _id); // id del producto que se esta editando
 
-    await Axios.post(props.urls.api + '/products', formData)
+    await Axios.post(`${props.urls.api}/products`, formData)
     .then(response => {
 
       const product = response.data.product;
@@ -180,9 +176,7 @@ let List = (props) => {
   return (
     <div>
 
-      <div className="form-group">
-        <ToastContainer />
-      </div>
+      <ToastMessage />
 
       {loading && (<Loading />)}
       <div className="d-flex flex-wrap justify-content-between align-items-start">
@@ -200,7 +194,7 @@ let List = (props) => {
           <form >
               <div className="d-flex flex-wrap justify-content-between align-items-center">
                 <div className="flex-1 form-group" style={{ width: '30%' }}>
-                  <img className="products-details-image" src={image ?? '../../../logo512.png'} alt={name} />                  
+                  <img className="products-details-image" src={image} alt={name} />                  
                   <input type="file" onChange={file => onChangeFile(file)} name="image" id="image" />   
                 </div>
                 <div className="flex-2 form-group" style={{ width: '70%' }}>
@@ -283,7 +277,8 @@ let List = (props) => {
 const mapStateToProps = state => ({
   shop: state.shop,
   urls: state.urls,
-  categories: state.categories
+  categories: state.categories,
+  products: state.products
 });
 List = connect(mapStateToProps)(List);
 

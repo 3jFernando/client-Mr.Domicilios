@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import Axios from 'axios';
+import { connect } from 'react-redux';
 
-export default function CreateAccount(props) {
+let CreateAccount = props => {
   const [loading, setLoading] = useState("CREAR CUENTA");
 
   const createAccount = async () => {
     
     setLoading("Creando cuenta, espera...");
-    await Axios.post('http://192.168.88.110:5000/api/shops', {
+    await Axios.post(`${props.urls.api}/shops`, {
+      action: 'CREATE',
       name: document.getElementById('name').value,
       phone: document.getElementById('phone').value,
       email: document.getElementById('email').value,
@@ -68,3 +70,10 @@ export default function CreateAccount(props) {
     </div>
   );
 }
+
+const mapToPropsState = state => ({
+  urls: state.urls
+});
+
+CreateAccount = connect(mapToPropsState)(CreateAccount);
+export default CreateAccount;
