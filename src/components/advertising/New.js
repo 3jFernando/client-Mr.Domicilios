@@ -18,7 +18,6 @@ let New = props => {
 
   const store = async () => {
 
-    setLoading(true)
     const formData = new FormData();
 
     formData.append('date_finish', date_finish);
@@ -28,6 +27,12 @@ let New = props => {
     formData.append('entity_id', entity_id);
     formData.append('disscount', disscount);
 
+    if(document.querySelector('#entity').value === '') {      
+      toast.warning("El campo elemento es obligatorio.");
+      return false;
+    }
+
+    setLoading(true)
     await Axios.post(`${props.urls.api}/advertising`, formData)
       .then(response => {
         const status = response.data.status;
@@ -48,11 +53,11 @@ let New = props => {
     setType(value);
     setEntities([]);
     if(value === 'Producto') {
-      setEntities(props.products);
+      setEntities(props.products);      
     } else {
       setEntities(props.categories);
-    }
-    setEntity_id();
+    }    
+    setEntity_id('');
   }
 
   return (
@@ -99,6 +104,7 @@ let New = props => {
               <div className="form-group col-4">
                 <label htmlFor="entity">Elemento</label><br />
                 <select className="form-control" id="entity" value={entity_id} onChange={text => setEntity_id(text.target.value)}>
+                  <option value=''>Seleccionar...</option>
                   {
                     entities.map(en => (
                     <option value={en._id}>{en.name}</option>

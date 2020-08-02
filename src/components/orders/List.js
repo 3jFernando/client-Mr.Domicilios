@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import ReactPaginate from 'react-paginate';
 
 import { clearOrders, createOrder } from '../../redux/actions/orders';
 import FORMAT_CASH from '../../utils/format_cash';
@@ -14,31 +15,31 @@ let List = (props) => {
 
     if(props.shops !== null) {
 
-      props.dispatch(clearOrders());
-
-      setLoading(true);
-      const load = async () => {
-
-        await Axios.get(props.urls.api + '/orders/shop/' + props.shops._id)
-        .then(response => {
-          const status = response.data.status;
-          if(status === 200) {
-           
-            const orders = response.data.orders ?? [];
-            orders.map(order => props.dispatch(createOrder(order)));
-
-          } else {
-            alert("Falla al tratar de cargar los datos intentalo de nuevo");
-          }
-        })
-        .catch(e => alert("Upps, ocurrio un error al tratar de realizar la accion"))
-        .finally(() => setLoading(false));
-
-      }
+      props.dispatch(clearOrders());      
       load();
     }
 
   }, []);
+
+  // cargar odenes
+  const load = async () => {
+    setLoading(true);
+    await Axios.get(props.urls.api + '/orders/shop/' + props.shops._id)
+    .then(response => {
+      const status = response.data.status;
+      if(status === 200) {
+       
+        const orders = response.data.orders ?? [];
+        orders.map(order => props.dispatch(createOrder(order)));
+
+      } else {
+        alert("Falla al tratar de cargar los datos intentalo de nuevo");
+      }
+    })
+    .catch(e => alert("Upps, ocurrio un error al tratar de realizar la accion"))
+    .finally(() => setLoading(false));
+
+  }
 
   // al vistar una orden deja de ser nueva
   const orderVisited = async (order) => {
@@ -46,7 +47,7 @@ let List = (props) => {
   }
 
   return (
-    <div>
+    <div className="table-responsive">
       {
         loading && (<div className="alert alert-dark bg-dark">
           <i className="fa fa-spinner mr-2 text-white"></i>

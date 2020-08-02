@@ -7,7 +7,7 @@ export default function Drawermenu(props) {
   return (
     <div className="drawer close">
       <div className="drawer-header">
-        <b className="text-white brand">Mr.Domicilio</b>
+        <b className="text-white brand">MENU</b>
         <span className="fa fa-close text-white drawer-close" onClick={() => closeMenu()}></span>
       </div>
       <div className="drawer-menu">
@@ -25,12 +25,9 @@ export default function Drawermenu(props) {
 function Draweritem(props) {
   return (
     <Link to={props.path} onClick={() => closeMenu()}>
-      <div className="drawer-item">
-        <div>
+      <div className="drawer-item">        
           <span className={props.icon}></span>
           <b>{props.name}</b>
-        </div>
-        <span className="fa fa-arrow-right"></span>
       </div>
     </Link>
   

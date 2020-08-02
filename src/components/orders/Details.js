@@ -6,6 +6,7 @@ import Axios from 'axios';
 // utilerias
 import FORMAT_CASH from '../../utils/format_cash';
 import FORMAT_DATE from '../../utils/format_date';
+import {toast} from 'react-toastify';
 
 import socketIOCCLIENT from 'socket.io-client';
 
@@ -46,7 +47,7 @@ let Details = props => {
     })
     .then(response => {
       if(response.data.status === 200) {
-        alert("Proceso realizado con exito. \n\nOrden en camino...");
+        toast.success("Proceso realizado con exito. \n\nOrden en camino...");
 
         // notificar al cliente sobre el estado de la orden
         if(socket !== null) {
@@ -56,8 +57,10 @@ let Details = props => {
           socket.emit('order-on-the-way', __connect, payload);
         }
 
+      } else if(response.data.status === 470) {
+        toast.error("El domiciliario seleccionado esta presentando problemas, por favor asegurate de que sea un domiciliario valido.");
       } else {
-        alert("Orden no encontrada, por favor recarga el sistema");
+        toast.error("Orden no encontrada, por favor recarga el sistema");
       }
     })
     .catch(e => alert("Upps, ocurrio un error, intentalo mas tarde."))

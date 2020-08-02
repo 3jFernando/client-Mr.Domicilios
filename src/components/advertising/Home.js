@@ -9,22 +9,39 @@ let Home = props => {
   const [loading, setLoading] = useState(false);
   const [advertisings, setAdvertisings] = useState([]);
 
-  useEffect(() => {
-
-    const load = async () => {
-      setLoading(true)
-
-      await Axios.get(`${props.urls.api}/advertising/shop/${props.shop._id}`)
-        .then(response => {
-          const status = response.data.status;
-          if (status === 200) setAdvertisings(response.data.advertisings);
-        })
-        .catch(e => toast.error("No es posible realizar la accion en este momento."))
-        .finally(() => setLoading(false));
-    }
+  useEffect(() => {    
     load();
-
   }, []);
+
+  const load = async () => {
+    setLoading(true)
+
+    await Axios.get(`${props.urls.api}/advertising/shop/${props.shop._id}`)
+      .then(response => {
+        const status = response.data.status;
+        if (status === 200) setAdvertisings(response.data.advertisings);
+      })
+      .catch(e => toast.error("No es posible realizar la accion en este momento."))
+      .finally(() => setLoading(false));
+  }
+
+  // eliminar
+  const remove = async _id => {
+
+    await Axios.delete(`${props.urls.api}/advertising/${_id}`)
+    .then(response => {
+      const status = response.data.status;
+      if (status === 200) {
+        load();
+        toast.success("Item eliminado con exito.");
+      } else if (status === 460) {
+        toast.warning(response.data.message);
+      }
+    })
+    .catch(e => toast.error("No es posible realizar la accion en este momento."))
+    .finally(() => setLoading(false));
+
+  }
 
   return (
     <div>
@@ -66,7 +83,7 @@ let Home = props => {
                   <td>{advertising.type}</td>
                   <td>{advertising.name}</td>
                   <td>
-                    <button className="btn btn-sm btn-danger"><span className="fa fa-remove mr-2" />Eliminar</button>
+                    <button className="btn btn-sm btn-danger" onClick={() => remove(advertising._id)}><span className="fa fa-remove mr-2" />Eliminar</button>
                   </td>
                 </tr>
               ))
