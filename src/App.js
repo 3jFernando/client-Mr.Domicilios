@@ -13,6 +13,7 @@ import ListOrders from './components/orders/List';
 import DetailsOrder from './components/orders/Details';
 import ListProducts from './components/products/List';
 import ListCategories from './components/categories/List';
+import NewCategories from './components/categories/New';
 import ListIncharges from './components/incharges/List';
 import CreateIncharges from './components/incharges/Create';
 import HomeAdvertising from './components/advertising/Home';
@@ -105,6 +106,8 @@ let App = (props) => {
                   <Route path='/orders/:id' component={DetailsOrder} />
                   <Route path='/products' exact component={ListProducts} />
                   <Route path='/categories' exact component={ListCategories} />
+                  <Route path='/categories/new' component={NewCategories} />
+                  <Route path='/categories/edit/:id' component={NewCategories} />
                   <Route path='/incharges' exact component={ListIncharges} />
                   <Route path='/incharges/create' component={CreateIncharges} /> 
                   <Route path='/advertising' exact component={HomeAdvertising} />
