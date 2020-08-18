@@ -11,8 +11,9 @@ const reducer = (state = [], {type, payload}) => {
     case VALIDATE_SESION_SHOP: {            
       return state;
     }
-    case CLOSE_SESCTION: {    
-      state = payload;
+    case CLOSE_SESCTION: {   
+      const shop = null; 
+      state = shop;
       return state;
     }
     default: 
