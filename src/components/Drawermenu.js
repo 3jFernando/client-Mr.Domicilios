@@ -1,9 +1,10 @@
 import React from 'react';
+import {connect} from 'react-redux';
 
 // rutas configuracion
 import { Link } from 'react-router-dom';
 
-export default function Drawermenu(props) {
+let Drawermenu = props => {
   return (
     <div className="drawer close">
       <div className="drawer-header">
@@ -16,18 +17,21 @@ export default function Drawermenu(props) {
         <Draweritem name="Productos" path="/products" icon="fa fa-shopping-bag" />
         <Draweritem name="Categorias" path="/categories" icon="fa fa-cube" />
         <Draweritem name="Domiciliarios" path="/incharges" icon="fa fa-group" />
-        <Draweritem name="Publicidad" path="/advertising" icon="fa fa-bolt" />
+        <Draweritem name="Publicidad" path="/advertising" icon="fa fa-bolt" licence={props.licence} />
       </div>
     </div>
   );
 }
 
-function Draweritem(props) {
+function Draweritem({path, icon, name, licence = null}) {
   return (
-    <Link to={props.path} onClick={() => closeMenu()}>
+    <Link to={path} onClick={() => closeMenu()}>
       <div className="drawer-item">        
-          <span className={props.icon}></span>
-          <b>{props.name}</b>
+          <span className={icon}></span>
+          <b>{name}</b>
+          {
+            licence !== null && licence.type === 'Basica' && (<span className="menu-only-licence">Premium</span>)
+          }
       </div>
     </Link>
   
@@ -39,3 +43,11 @@ function closeMenu() {
   drawer.classList.remove('open');
   drawer.classList.add('close');
 }
+
+let mapPropsToState = state => ({
+  shop: state.shop,
+  licence: state.licence,
+});
+
+Drawermenu = connect(mapPropsToState)(Drawermenu);
+export default Drawermenu;

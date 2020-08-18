@@ -86,7 +86,6 @@ a, a:hover {
 }
 .drawer-item{
   height: 6rem;
-  background-color: #F8F8F8;
   margin-bottom: 4px;
   display: block;
   text-align: center;
@@ -94,11 +93,13 @@ a, a:hover {
   border-radius: 4px;
   padding: 10px;
   padding-top: 20px;
+  position: relative;
 }
 .drawer-item span{
   display: block;
-  font-size: 35px;
+  font-size: 30px;
   color: #000000;
+  margin-bottom: 5px;
 }
 .drawer-item:hover{
   cursor: pointer;
@@ -106,6 +107,34 @@ a, a:hover {
 }
 .drawer-item.open{
   background-color: #CCCCCC;
+}
+.menu-only-licence{
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 11px !important;
+  color: white !important;
+  background-color: #29d45d;
+  padding: 2px 4px;
+  border-radius: 2px;
+}
+.menu-only-licence-info{
+  color: white !important;
+  background-color: #29d45d;
+  padding: 2px 4px;
+  border-radius: 2px;
+}
+.licence-basic{
+  color: #F8F8F8 !important;
+  background-color: #000000;
+  padding: 2px 4px;
+  border-radius: 2px;
+}
+.licence-premium{
+  color: white !important;
+  background-color: #29d45d;
+  padding: 2px 4px;
+  border-radius: 2px;
 }
 /* authenticacion */
 .logotype-create-account{

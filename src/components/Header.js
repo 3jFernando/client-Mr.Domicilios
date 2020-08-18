@@ -3,13 +3,12 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { closeSectionShop } from '../redux/actions/shops';
-import { saveState } from '../redux/store';
 
 let Header = (props) => {
 
   const closeSection = () => {
-    props.dispatch(closeSectionShop(null));
-    saveState();
+    localStorage.removeItem('GLOBAL_STATE');
+    props.dispatch(closeSectionShop(null));    
     window.location.assign('/');
   }
 

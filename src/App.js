@@ -12,6 +12,7 @@ import Drawermenu from './components/Drawermenu';
 import ListOrders from './components/orders/List';
 import DetailsOrder from './components/orders/Details';
 import ListProducts from './components/products/List';
+import ItemProduct from './components/products/Item';
 import ListCategories from './components/categories/List';
 import NewCategories from './components/categories/New';
 import ListIncharges from './components/incharges/List';
@@ -105,6 +106,7 @@ let App = (props) => {
                   <Route path='/orders' exact component={ListOrders} />
                   <Route path='/orders/:id' component={DetailsOrder} />
                   <Route path='/products' exact component={ListProducts} />
+                  <Route path='/products/:action/:id' exact component={ItemProduct} />
                   <Route path='/categories' exact component={ListCategories} />
                   <Route path='/categories/new' component={NewCategories} />
                   <Route path='/categories/edit/:id' component={NewCategories} />

@@ -47,9 +47,15 @@ let Home = props => {
     <div>
       <div className="d-flex justify-content-between align-items-center">
         <h1 className='color-two'>Publicidad</h1>
-        <Link to='/advertising/new'>
-          <button className="btn btn-dark"><span className="fa fa-plus mr-2" />Nueva</button>
-        </Link>
+        {
+          props.licence !== null && props.licence.type === 'Premium' ? (
+            <Link to='/advertising/new'>
+              <button className="btn btn-dark"><span className="fa fa-plus mr-2" />Nueva</button>
+            </Link>
+          ) : (
+            <span className="menu-only-licence-info">Solo para licencias Premium</span>
+          )
+        }        
       </div>
       <hr />
 
@@ -98,7 +104,8 @@ let Home = props => {
 
 const mapPropsToState = state => ({
   shop: state.shop,
-  urls: state.urls
+  urls: state.urls,
+  licence: state.licence
 });
 Home = connect(mapPropsToState)(Home);
 export default Home;

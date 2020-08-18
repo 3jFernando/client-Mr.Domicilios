@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 // aciones
 import { loginACTION } from '../../redux/actions/shops';
+import { storeLicence, clearLicence } from '../../redux/actions/licence';
 
 let Login = (props) => {
   const [loading, setLoading] = useState("INICIAR SESION");
@@ -21,6 +22,9 @@ let Login = (props) => {
       if(status === 200) {
 
         props.dispatch(loginACTION(response.data.shop));        
+        const licence = response.data.licence ?? null;
+        props.dispatch(clearLicence());
+        props.dispatch(storeLicence(licence));
         window.location.assign('/');
 
       } else if(status === 460 || status === 470) {
